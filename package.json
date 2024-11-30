@@ -1,0 +1,24 @@
+{
+  "name": "scroll-semaphore",
+  "version": "1.0.0",
+  "description": "Getting started with Semaphore",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tawago",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "@semaphore-protocol/contracts": "^4.5.0",
+    "@zk-kit/imt.sol": "^2.0.0-beta.12",
+    "@zk-kit/lean-imt": "^2.2.1",
+    "@zk-kit/lean-imt.sol": "^2.0.0",
+    "hardhat": "^2.22.16",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.12"
+  }
+}
