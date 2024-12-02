@@ -1,19 +1,14 @@
 "use client";
-import React, { useCallback, useEffect, useState, } from "react";
+import React, { useCallback, useEffect, useState, ChangeEvent } from "react";
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
-  UseWaitForTransactionReceiptReturnType,
 } from "wagmi";
 import useMultiBaas from "../hooks/useMultiBaas";
 import useSemaphore from "../hooks/useSemaphore";
 import ProgressBar from "./ProgressBar";
 
-interface MembershipProps {
-  setTxReceipt: (receipt: UseWaitForTransactionReceiptReturnType['data']) => void;
-}
-
-const Membership: React.FC<MembershipProps> = ({ setTxReceipt }) => {
+const Membership: React.FC = () => {
   const { joinGroup, checkCommitmentInGroup } = useMultiBaas();
   const { createIdentity, identity } = useSemaphore();
   const [secretCode, setSecretCode] = useState<string>();
@@ -24,12 +19,12 @@ const Membership: React.FC<MembershipProps> = ({ setTxReceipt }) => {
   const [loading, setLoading] = useState(false);
 
 
-  const onSecretUpdate = (event: ChangeEventHandler<HTMLInputElement>) => {
+  const onSecretUpdate = (event: ChangeEvent<HTMLInputElement>) => {
     setSecretCode(event.target.value)
   }
 
   const onClickJoin = useCallback(async () => {
-    if (!identity) {
+    if (!identity || !secretCode) {
       return;
     }
     try {
@@ -76,7 +71,7 @@ const Membership: React.FC<MembershipProps> = ({ setTxReceipt }) => {
             <>
               <button className="self-stretch border-2 py-2 px-4 rounded hover:bg-gray-50" onClick={onClickCheckCommitment}>Check commitment</button>
               <label className="flex flex-col my-2">
-                <span>What's the secret code?</span>
+                <span>What is the secret code?</span>
                 <input className="border-2 w-40 h-10 py-2 px-4 rounded" type="text" onChange={onSecretUpdate}/>
               </label>
               <button className="self-stretch border-2 py-2 px-4 rounded hover:bg-gray-50" onClick={onClickJoin}>Join</button>

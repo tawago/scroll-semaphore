@@ -5,7 +5,7 @@ export async function generateMerkleProof(
   commitmentsArray: bigint[],
   index: number,
 ) {
-  const hash = (a, b) => poseidon2([a, b])
+  const hash = (a: bigint, b: bigint) => poseidon2([a, b])
 
   // Initialize the Merkle tree
   const tree = new LeanIMT<bigint>(hash);

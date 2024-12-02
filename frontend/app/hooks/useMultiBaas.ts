@@ -1,13 +1,13 @@
 "use client";
+import type { Identity } from "@semaphore-protocol/identity";
 import type { PostMethodArgs, MethodCallResponse, TransactionToSignResponse, Event } from "@curvegrid/multibaas-sdk";
+import { Configuration, ContractsApi, EventsApi, ChainsApi, EventQueriesApi }from "@curvegrid/multibaas-sdk";
 import type { SendTransactionParameters } from "@wagmi/core";
 import { generateProof as generateSemaphoreProof } from "@semaphore-protocol/proof"
-import { Configuration, ContractsApi, EventsApi, ChainsApi, EventQueriesApi }from "@curvegrid/multibaas-sdk";
 import { useAccount } from "wagmi";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSemaphore from "../hooks/useSemaphore";
 import { generateMerkleProof } from "../utils/merkelProof";
-import { Identity } from "@semaphore-protocol/core";
 
 interface ChainStatus {
   chainID: number;
@@ -104,40 +104,40 @@ const useMultiBaas = (): MultiBaasHook => {
     }
   }, [votingAddressLabel])
 
-  const _getCommitmentsFromMemberAddedEvents = useCallback(async (): Promise<Array<bigint> | null> => {
-    try {
-      const eventSignature = "MemberAdded(uint256,uint256,uint256,uint256)";
-      const response = await eventsApi.listEvents(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        false,
-        chain,
-        semaphoreAddressLabel,
-        semaphoreContractLabel,
-        eventSignature,
-        50
-      );
-      const events: Event[] = response.data.result
-        .filter(event => event.transaction.contract.addressLabel === votingAddressLabel)
-      const commitments = events
-        .sort((a, b) => new Date(a.triggeredAt).getTime() - new Date(b.triggeredAt).getTime())
-        .map(item => item.event.inputs[2].value)
-      return commitments;
-    } catch (err) {
-      console.error("Error getting member added events:", err);
-      return null;
-    }
-  }, [eventsApi, chain, semaphoreAddressLabel, semaphoreContractLabel, votingAddressLabel]);
+  // const _getCommitmentsFromMemberAddedEvents = useCallback(async (): Promise<Array<bigint> | null> => {
+  //   try {
+  //     const eventSignature = "MemberAdded(uint256,uint256,uint256,uint256)";
+  //     const response = await eventsApi.listEvents(
+  //       undefined,
+  //       undefined,
+  //       undefined,
+  //       undefined,
+  //       undefined,
+  //       false,
+  //       chain,
+  //       semaphoreAddressLabel,
+  //       semaphoreContractLabel,
+  //       eventSignature,
+  //       50
+  //     );
+  //     const events: Event[] = response.data.result
+  //       .filter(event => event.transaction.contract.addressLabel === votingAddressLabel)
+  //     const commitments = events
+  //       .sort((a, b) => new Date(a.triggeredAt).getTime() - new Date(b.triggeredAt).getTime())
+  //       .map(item => item.event.inputs[2].value)
+  //     return commitments;
+  //   } catch (err) {
+  //     console.error("Error getting member added events:", err);
+  //     return null;
+  //   }
+  // }, [eventsApi, chain, semaphoreAddressLabel, semaphoreContractLabel, votingAddressLabel]);
 
   const _getCommitmentsFromQuery = useCallback(async (): Promise<Array<bigint> | null> => {
     const queryLabel = "commitments";
     try {
 
       const response = await eventQueriesApi.executeEventQuery(queryLabel);
-      const commitments = response.data.result.rows.map((row: any) => row.identitycommitment);
+      const commitments = response.data.result.rows.map((row) => row.identitycommitment);
       return commitments;
     } catch(e) {
       console.error("Error getting member added events:", e);
@@ -182,6 +182,7 @@ const useMultiBaas = (): MultiBaasHook => {
   
   const castVote = useCallback(async (choice: string): Promise<SendTransactionParameters> => {
     if (!identity) throw Error("No identity")
+    if (!groupId) throw Error("No groupId")
     const scope = groupId;
 
     // You have two API to get commitments

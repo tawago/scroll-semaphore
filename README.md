@@ -2,6 +2,8 @@
 
 Welcome to the `scroll-semaphore` repository! This project demonstrates how to use Semaphore on the Scroll network to prove membership in a group without revealing your identity. You'll learn how to deploy key contracts, interact with them, and connect a frontend app to create a privacy-preserving voting system.
 
+Check out [the demo](https://scroll-semaphore.vercel.app/)
+
 ## Table of Contents
 
 - [Introduction](#introduction)

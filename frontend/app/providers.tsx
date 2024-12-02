@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-
-// import {
-//   getDefaultConfig,
-//   RainbowKitProvider,
-//   Chain
-// } from '@rainbow-me/rainbowkit';
 import { http, createConfig, WagmiProvider } from 'wagmi'
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
 import {
   scrollSepolia
 } from 'wagmi/chains';

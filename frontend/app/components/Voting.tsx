@@ -35,8 +35,8 @@ const Voting: React.FC<VotingProps> = ({ setTxReceipt }) => {
       if (votesArray) {
         setVotesCount(votesArray.map((vote) => parseInt(vote)));
       }
-    } catch (error) {
-      console.error("Error fetching votes:", error);
+    } catch (e) {
+      console.error("Error fetching votes:", e);
     }
   }, [getVotes]);
 
@@ -55,8 +55,8 @@ const Voting: React.FC<VotingProps> = ({ setTxReceipt }) => {
         } else {
           setCurrentVoteIndex(null);
         }
-      } catch (error) {
-        console.error("Error checking user vote:", error);
+      } catch (e) {
+        console.error("Error checking user vote:", e);
       }
     }
   }, [address, hasVoted, getUserVotes]);
@@ -83,8 +83,8 @@ const Voting: React.FC<VotingProps> = ({ setTxReceipt }) => {
           : await castVote(index.toString());
       const hash = await sendTransactionAsync(tx);
       setTxHash(hash);
-    } catch (error) {
-      setError('Error casting a vote')
+    } catch (e) {
+      setError(`Error casting a vote: ${e}`)
       setTimeout(() => {
         setError(null)
       }, 3000)

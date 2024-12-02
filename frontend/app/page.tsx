@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         {/* <ConnectButton /> */}
       </div>
       <div>
-        <Membership setTxReceipt={setTxReceipt} />
+        <Membership />
         <Voting setTxReceipt={setTxReceipt} />
         <Events txReceipt={txReceipt} />
       </div>
