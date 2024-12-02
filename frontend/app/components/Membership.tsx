@@ -44,7 +44,6 @@ const Membership: React.FC<MembershipProps> = ({ setTxReceipt }) => {
 
   const onClickCheckCommitment = useCallback(async () => {
     if(!identity) return;
-    console.log('onClickCheckCommitment identity', identity)
     const result = await checkCommitmentInGroup(identity);
     alert(result ? "Yes! you are in" : "No, you are not in");
     setIsJoined(result);
@@ -53,7 +52,6 @@ const Membership: React.FC<MembershipProps> = ({ setTxReceipt }) => {
   useEffect(() => setIsJoined(false),[identity] )
 
   useEffect(() => {
-    console.log('txReceipt received', txReceipt)
     if (txReceipt) {
       onClickCheckCommitment();
       setLoading(false);
